@@ -1,0 +1,29 @@
+﻿@page "/products"
+
+<div class="container mt-5  min-height">
+    <div class="row">
+
+        @if (products == null)
+        {
+            <p>Getting products...</p>
+        }
+        else
+        {
+            @foreach (var product in products)
+            {
+                <ProductCard Item="@product" />
+            }
+        }
+
+    </div>
+</div>
+
+@code {
+#nullable enable
+    private Product[]? products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await Http.GetFromJsonAsync<Product[]>("https://localhost:44314/api/Products");
+    }
+}

@@ -1,0 +1,58 @@
+﻿@page "/product/{id}"
+<div class="container mt-5 text-center text-lg-start  min-height">
+    @if (product != null)
+    {
+        <div class="row align-items-center">
+            <div class="col-12 text-center mb-3 p-2">
+                <h2>@product.Name</h2>
+            </div>
+            <div class="col-12 col-lg-6 mb-3">
+                <div class="img-container p-2">
+                    <img src="@product.Img" class="img" alt="Image on @product.Name">
+                </div>
+            </div>
+            <div class="col-12 col-lg-6">
+                <div class="p-2 mb-3">
+                    <div class="mt-3">
+                        <h3>Description</h3>
+                        <p>
+                            @product.Description
+                        </p>
+                    </div>
+                </div>
+                <div class="p-2">
+                    <p>
+                        <span class="text-danger">@product.Price kr</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .img {
+        display: inline-block;
+        max-width: 100%;
+        height: auto;
+    }
+
+    .img-container {
+        display: flex;
+        align-items: center;
+    }
+</style>
+
+@code {
+    [Parameter]
+    #nullable enable
+    public string? Id { get; set; }
+
+    public Product? product { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        product = await Http.GetFromJsonAsync<Product>($"https://localhost:44314/api/Products/{Id}");
+    }
+
+}

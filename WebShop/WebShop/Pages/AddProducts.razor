@@ -1,0 +1,68 @@
+﻿@page "/add"
+
+<div class="container min-height mt-5  min-height">
+    <div class="card shadow p-3">
+        <EditForm Model="@product" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="@HandleInvalidSubmit">
+            <div class="mb-3">
+                <label for="name" class="form-label">Product Name:</label>
+                <InputText class="form-control" id="name" @bind-Value="product.Name" />
+                <ValidationMessage For="@(() => product.Name)" style="color: #ba291c" />
+            </div>
+            <div class="mb-3">
+                <label for="image" class="form-label">Image link:</label>
+                <InputText class="form-control" id="image" @bind-Value="product.Img" />
+                <ValidationMessage For="@(() => product.Img)" style="color: #ba291c" />
+            </div>
+            <div class="mb-3">
+                <label for="shortDescription" class="form-label">Short Description:</label>
+                <InputText class="form-control" id="shortDescription" @bind-Value="product.Short" />
+                <ValidationMessage For="@(() => product.Short)" style="color: #ba291c" />
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description:</label>
+                <InputTextArea class="form-control" id="description" rows="3" @bind-Value="product.Description"></InputTextArea>
+                <ValidationMessage For="@(() => product.Description)" style="color: #ba291c" />
+            </div>
+            <div class="mb-3">
+                <label for="price" class="form-label">Price in kr:</label>
+                <InputNumber class="form-control" id="price" @bind-Value="product.Price" />
+                <ValidationMessage For="@(() => product.Price)" style="color: #ba291c" />
+            </div>
+            <DataAnnotationsValidator />
+            <div class="mb-3">
+                <button type="submit" class="btn btn-success w-100">Add Product</button>
+            </div>
+            <div class="text-center text-success">
+                <p>
+                    @success
+                </p>
+            </div>
+
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private Product product = new();
+    private string success = "";
+
+    private void HandleInvalidSubmit()
+    {
+        success = "";
+
+        StateHasChanged();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        var response = await Http.PostAsJsonAsync("https://localhost:44314/api/Products", product);
+
+        response.EnsureSuccessStatusCode();
+
+        success = $"{product.Name} was added!";
+
+        product = new();
+
+        StateHasChanged();
+    }
+}

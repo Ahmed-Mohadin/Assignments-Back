@@ -1,0 +1,48 @@
+﻿<div class="col-sm-12 col-md-6 col-xl-4 mb-4">
+    <div class="card p-3 shadow card-minHeight">
+        <div class="img-container">
+            <img src="@Item.Img" class="img" alt="Image on @Item.Name">
+        </div>
+        <div class="card-body content">
+            <div>
+                <h5 class="card-title">@Item.Name</h5>
+                <p class="card-text">@Item.Short</p>
+            </div>
+            <div class="d-flex justify-content-between">
+                <p class="text-danger">@Item.Price kr</p>
+                <a href="product/@Item.Id" class="btn btn-success">Read More</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card-minHeight {
+        min-height: 600px;
+    }
+
+    .img {
+        display: inline-block;
+        width: 100%;
+        height: auto;
+    }
+
+    .img-container {
+        flex: 6;
+        display: flex;
+        align-items: center;
+    }
+
+    .content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+</style>
+
+@code {
+
+    [Parameter]
+    public Product Item { get; set; }
+}
